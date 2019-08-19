@@ -3,7 +3,9 @@ import React from "react";
 const Speak = props => {
   return (
     <>
-      <button onClick={props.speak}>Speak</button>
+      <button data-testid="speak" onClick={props.speak}>
+        Speak
+      </button>
       <div>{props.message}</div>
     </>
   );

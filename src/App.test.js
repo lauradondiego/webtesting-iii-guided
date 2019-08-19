@@ -1,8 +1,10 @@
 import React from "react";
 import renderer from "react-test-renderer"; // 1: install this npm module as a dev dependency
 //can name renderer banana or whatever you want
-import App, { asyncFunc } from "./App";
 import { render, fireEvent } from "@testing-library/dom";
+
+import App, { asyncFunc } from "./App";
+
 //you can do snapshot tests for every component
 describe("<App />", () => {
   // 2. write this test
@@ -16,21 +18,21 @@ describe("<App />", () => {
 
 describe("asyncFunc", () => {
   it("eventually resolves to success", () => {
-    //now we describe our logic and call our async function
-    let resolvedValue = null;
     const expected = "Success!";
-    asyncFunc().then(res => {
-      resolvedValue = res;
-      expect(resolvedValue).toEqual(expected);
-    });
-    //its a promise so use .then
+    return expect(asyncFunc()).resolves.toBe(expected);
   });
 });
 
 describe("speak", () => {
-  it("should pass 'bark' into Speak", () => {
-    const { getByText, queryByText } = render(<App />);
-    fireEvent.click(getByText(/speak/i));
+  it('Should pass "bark" into Speak', () => {
+    const { getByTestId, queryByText } = render(<App />);
+
+    expect(queryByText(/bark/i)).toBeFalsy();
+
+    fireEvent.click(getByTestId(/speak/i));
+
     expect(queryByText(/bark/i)).toBeTruthy();
   });
 });
+
+// yarn add -D (npm install -D) @testing-library/react
